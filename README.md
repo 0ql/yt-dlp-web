@@ -11,3 +11,17 @@ A webserver written with SvelteKit to run `yt-dlp` commands and manage your down
 - Respects your prefered color scheme
 
 Disclamer: The interface only scratches the surface of the options yt-dlp offers.
+
+## Dev
+
+```
+pnpm i
+pnpm dev
+```
+
+## Build and Run
+
+```
+pnpm build
+node build
+```
