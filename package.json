@@ -1,7 +1,6 @@
 {
 	"name": "yt-dlp-web",
 	"version": "0.0.1",
-	"private": true,
 	"scripts": {
 		"dev": "vite dev --port 3000",
 		"build": "vite build",
