@@ -39,7 +39,8 @@ html, body {
 }
 
 * {
-	color: var(--text-color)
+	color: var(--text-color);
+	box-sizing: border-box;
 }
 
 *::selection {
