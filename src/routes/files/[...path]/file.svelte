@@ -33,25 +33,23 @@
 
 <a
 	class="box block p-4 w-full text-left flex items-center text-lg gap-3 cursor-pointer hover:bg-[var(--bg-trd-color)] hover:border-[var(--bg-trd-b-color)] no-underline"
-	href="/music{path}{file.name + file.extension}"
+	href="/music{path}{encodeURI(file.name + file.extension)}"
 >
-	<!-- svelte-ignore a11y-missing-content -->
-	<a
+	<i
 		class="i-heroicons:play-circle-solid inline-block text-3xl min-w-8"
 	/>
 	<input
 		class="z-10 bg-transparent text-lg b-none w-full outline-none"
 		spellcheck="false"
+		title="Filename"
 		bind:value={newname}
 		on:change={rename}
 		on:click|preventDefault
 	/>
 	<div>{file.extension.substring(1)}</div>
-	<i
-		class="i-heroicons:trash-solid text-2xl min-w-8 hover:text-[var(--highlight-color)]"
-		on:click={del}
-		tabindex="0"
-		role="button"
-		on:click|preventDefault
+	<button
+		class="i-heroicons:trash-solid text-2xl min-w-8 hover:text-[var(--alert-color)] cursor-pointer"
+		title="Delete File"
+		on:click|preventDefault={del}
 	/>
 </a>

@@ -4,6 +4,7 @@
 	const settings = {
 		URL: "",
 		extractAudio: false,
+		restrictFilenames: true,
 		audioFormat: "best",
 		directory: "./static/music/",
 		fileName: "%(title)s.%(ext)s",
@@ -15,7 +16,9 @@
 		settings.extractAudio
 			? "-x " + "--audio-format " + settings.audioFormat
 			: ""
-	} '${settings.URL}' -o '${settings.directory}${settings.fileName}'`;
+	} '${settings.URL}' -o '${settings.directory}${settings.fileName}' ${
+		settings.restrictFilenames ? "--restrict-filenames" : ""
+	}`;
 
 	let arr: string[] = [];
 
@@ -57,6 +60,7 @@
 	<i class="i-heroicons:link text-2xl block" />
 	<input
 		class="bg-transparent border-none outline-none text-lg w-full"
+		type="url"
 		spellcheck="false"
 		bind:value={settings.URL}
 		placeholder="Enter Link"
@@ -72,10 +76,10 @@
 	>
 </h2>
 
-<div class="col-span-full flex items-center gap-4">
-	<Switch bind:checked={settings.extractAudio} />
+<label for="extract-audio" class="col-span-full flex items-center gap-4">
+	<Switch id="extract-audio" bind:checked={settings.extractAudio} />
 	<span>Extract Audio</span>
-</div>
+</label>
 {#if settings.extractAudio}
 	<select
 		class="col-span-full box cursor-pointer outline-none p-4 text-lg"
@@ -101,13 +105,22 @@
 		href="https://github.com/yt-dlp/yt-dlp#output-template">docs</a
 	>
 </h2>
+
+<label for="restrict-filenames" class="col-span-full flex items-center gap-4">
+	<Switch id="restrict-filenames" bind:checked={settings.restrictFilenames} />
+	<span>Restrict Filenames</span>
+</label>
 <input
-	class="box p-3 text-lg font-mono disabled:text-[var(--text-scnd-color)]"
+	class="box p-3 text-lg font-mono col-span-full md:col-span-1"
 	bind:value={settings.directory}
+	spellcheck="false"
+	title="Basepath"
 />
 <input
-	class="box p-3 text-lg font-mono focus:outline-solid outline-2px focus:outline-[var(--highlight-color)]"
+	class="box p-3 text-lg font-mono col-span-full md:col-span-1"
 	bind:value={settings.fileName}
+	spellcheck="false"
+	title="Template"
 />
 
 <h2 class="col-span-full font-normal text-sm">Generated Command</h2>
@@ -127,7 +140,6 @@
 	</div>
 </div>
 
-<button
-	class="col-span-full bg-[var(--highlight-color)] b-none p-2 rounded-lg text-white text-lg cursor-pointer"
-	on:click={run}>Download</button
+<button class="box p-2 col-span-full text-lg cursor-pointer" on:click={run}
+	>Download</button
 >

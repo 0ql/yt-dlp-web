@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 
-
 :root {
 	--bg-color: #EEEEEE;
 	--bg-scnd-color: #CACACA;
@@ -12,6 +11,7 @@
 	--text-color: #4B4B4B;
 	--text-scnd-color: darkgray;
 	--highlight-color: #2289C3;
+	--alert-color: #e0442f;
 }
 
 
@@ -27,6 +27,7 @@
 		--text-color: white;
 		--text-scnd-color: gray;
 		--highlight-color: #2289C3;
+		--alert-color: #e0442f;
 	}
 }
 
@@ -41,6 +42,7 @@ html, body {
 * {
 	color: var(--text-color);
 	box-sizing: border-box;
+	-webkit-tap-highlight-color: transparent;
 }
 
 *::selection {
@@ -52,6 +54,12 @@ html, body {
 	background-color: var(--bg-scnd-color);
 	border: 2px solid var(--bg-scnd-b-color);
 	border-radius: 0.5rem;
+}
+
+.box:hover {
+	background-color: var(--bg-trd-color);
+	border-color: var(--bg-trd-b-color);
+	transition: ease 200ms;
 }
 
 .box-scnd {
