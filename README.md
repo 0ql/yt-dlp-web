@@ -28,6 +28,6 @@ node build
 
 ## Deploy using Docker / Podman
 ```
-podman build --build-arg ORIGIN='http://example.com' -t yt-dlp-web .
+docker build --build-arg ORIGIN='http://example.com' -t yt-dlp-web .
 docker run -p 3000:3000 yt-dlp-web
 ```
