@@ -1,4 +1,4 @@
-import { renameSync, rmSync, rmdirSync } from "fs";
+import { renameSync, rmSync } from "fs";
 import type { RequestHandler } from "./$types";
 
 export type PUTRenameFileOrDir = {
@@ -11,9 +11,9 @@ export type DELETEFileOrDir = {
 }
 
 export const PUT: RequestHandler = async ({ request }) => {
-	const { oldpath, newname }: PUTRenameFileOrDir = await request.json()
+	const { oldpath: oldPath, newname }: PUTRenameFileOrDir = await request.json()
 
-	renameSync("./static/music/" + oldpath, "./static/music/" + newname)
+	renameSync("./static/music" + oldPath, "./static/music/" + newname)
 
 	return new Response()
 }

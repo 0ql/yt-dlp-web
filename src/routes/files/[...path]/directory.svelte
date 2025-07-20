@@ -10,13 +10,18 @@
 	const dispatch = createEventDispatcher();
 
 	const rename = async () => {
-		await fetch("/files", {
+		const res = await fetch("/files", {
 			method: "PUT",
 			body: JSON.stringify({
 				oldpath: path + dir,
 				newname,
 			} satisfies PUTRenameFileOrDir),
-		});
+		})
+		if (!res.ok) {
+			console.error("Failed to rename directory:", res.statusText);
+			return;
+		}
+		dir = newname;
 	};
 
 	const del = async () => {
@@ -34,15 +39,13 @@
 	class="box block p-4 w-full text-left flex items-center text-lg gap-3 cursor-pointer no-underline"
 	href="/files{path}{dir}"
 >
-	<i
-		class="i-heroicons:folder-solid inline-block text-2xl min-w-8"
-	/>
+	<i class="i-heroicons:folder-solid inline-block text-2xl min-w-8" />
 	<input
 		class="bg-transparent text-lg b-none w-full outline-none"
 		spellcheck="false"
 		title="Directory Name"
 		bind:value={newname}
-		on:change={rename}
+		on:input={rename}
 		on:click|preventDefault
 	/>
 	<button

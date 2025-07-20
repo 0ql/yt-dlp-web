@@ -1,8 +1,10 @@
 import { exec } from "child_process";
 import type { RequestHandler } from "./$types";
 
-export const POST: RequestHandler = async ({ request, url }) => {
+export const POST: RequestHandler = async ({ request }) => {
 	const { cmd }: { cmd: string } = await request.json()
+
+	console.log(cmd)
 
 	// const cmd = `yt-dlp ${settings.extractAudio ? "-x " + "--audio-format " + settings.audioFormat : ""} '${settings.URL}' -o './static/music/%(title)s.%(ext)s'`;
 	const cp = exec(cmd);

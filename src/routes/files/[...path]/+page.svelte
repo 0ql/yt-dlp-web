@@ -13,11 +13,14 @@
 	>
 {/if}
 <div class="grid grid-cols-1 md:grid-cols-2 col-span-full gap-4">
+	{#if data.dirs.length === 0 && data.files.length === 0}
+		<p class="text-gray-500">This directory is empty.</p>
+	{/if}
 	{#each data.dirs as dir, i}
 		{#if dir}
 			<Directory
 				path={data.path}
-				{dir}
+				dir={dir}
 				on:deleted={() => {
 					delete data.dirs[i];
 					data.dirs = data.dirs;

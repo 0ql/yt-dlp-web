@@ -1,4 +1,4 @@
-import { readdirSync } from "fs";
+import { accessSync, mkdirSync, readdirSync } from "fs";
 import type { PageServerLoad } from "./$types";
 import path from "path";
 
@@ -35,6 +35,12 @@ const getDir = (basepath: string, p: string): Dir => {
 };
 
 export const load: PageServerLoad = async ({ params }) => {
+	try {
+		accessSync('./static/music/');
+	} catch (e) {
+		mkdirSync('./static/music/', { recursive: true });
+	}
+
 	let dir = getDir('./static/music/', params.path)
 
 	return dir
