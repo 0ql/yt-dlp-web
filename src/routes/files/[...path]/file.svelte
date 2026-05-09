@@ -1,14 +1,10 @@
 <script lang="ts">
-	import { createEventDispatcher } from "svelte";
 	import type { File } from "./+page.server";
 	import type { PUTRenameFileOrDir, DELETEFileOrDir } from "./+server";
 
-	export let path: string;
-	export let file: File;
+	let { path, file, ondeleted }: { path: string; file: File; ondeleted: () => void } = $props();
 
-	let newname = file.name;
-
-	const dispatch = createEventDispatcher();
+	let newname = $state(file.name);
 
 	const rename = async () => {
 		console.log(
@@ -36,7 +32,7 @@
 				fullpath: path + file.name + file.extension,
 			} satisfies DELETEFileOrDir),
 		});
-		if (res.ok) dispatch("deleted");
+		if (res.ok) ondeleted();
 	};
 </script>
 
@@ -50,13 +46,13 @@
 		spellcheck="false"
 		title="Filename"
 		bind:value={newname}
-		on:input={rename}
-		on:click|preventDefault
+		oninput={rename}
+		onclick={(e) => e.preventDefault()}
 	/>
 	<div>{file.extension.substring(1)}</div>
 	<button
 		class="i-heroicons:trash-solid text-2xl min-w-8 hover:text-[var(--alert-color)] cursor-pointer"
 		title="Delete File"
-		on:click|preventDefault={del}
+		onclick={(e) => { e.preventDefault(); del(); }}
 	/>
 </a>

@@ -1,7 +1,10 @@
 <script lang="ts">
-	import { page } from "$app/stores";
+	import { page } from "$app/state";
+	import type { Snippet } from "svelte";
 	import "./global.css";
 	import "uno.css";
+
+	let { children }: { children: Snippet } = $props();
 </script>
 
 <svelte:head>
@@ -14,7 +17,7 @@
 		class="col-span-full bg-[var(--bg-scnd-color)] p-2 rounded-lg b-solid b-[var(--bg-scnd-b-color)] flex justify-between gap-3 text-center"
 	>
 		<a
-			class="{$page.route.id === '/download'
+			class="{page.route.id === '/download'
 				? 'bg-[var(--bg-trd-color)] outline-solid outline-[var(--bg-trd-b-color)]'
 				: ''} p-3 rounded-sm w-full no-underline flex justify-center gap-3"
 			href="/download"
@@ -22,9 +25,9 @@
 			<i class="i-heroicons:arrow-down-tray-solid block text-xl" />
 			Download</a
 		>
-		{#if $page.route.id}
+		{#if page.route.id}
 			<a
-				class="{$page.route.id.includes('/files')
+				class="{page.route.id.includes('/files')
 					? 'bg-[var(--bg-trd-color)] outline-solid outline-[var(--bg-trd-b-color)]'
 					: ''} p-3 rounded-sm w-full no-underline flex justify-center gap-3"
 				href="/files"
@@ -34,5 +37,5 @@
 			>
 		{/if}
 	</nav>
-	<slot />
+	{@render children()}
 </main>

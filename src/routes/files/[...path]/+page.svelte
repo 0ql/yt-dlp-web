@@ -1,12 +1,13 @@
 <script lang="ts">
-	import { page } from "$app/stores";
+	import { page } from "$app/state";
 	import File from "./file.svelte";
 	import type { Dir } from "./+page.server";
 	import Directory from "./directory.svelte";
-	export let data: Dir;
+
+	let { data }: { data: Dir } = $props();
 </script>
 
-{#if $page.params.path !== ""}
+{#if page.params.path !== ""}
 	<a href="./" class="flex items-center gap-3 no-underline text-normal p-2">
 		<i class="i-heroicons:arrow-left-solid inline-block text-2xl" />
 		Back</a
@@ -20,10 +21,9 @@
 		{#if dir}
 			<Directory
 				path={data.path}
-				dir={dir}
-				on:deleted={() => {
+				{dir}
+				ondeleted={() => {
 					delete data.dirs[i];
-					data.dirs = data.dirs;
 				}}
 			/>
 		{/if}
@@ -33,9 +33,8 @@
 			<File
 				path={data.path}
 				{file}
-				on:deleted={() => {
+				ondeleted={() => {
 					delete data.files[i];
-					data.files = data.files;
 				}}
 			/>
 		{/if}

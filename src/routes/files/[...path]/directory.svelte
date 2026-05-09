@@ -1,13 +1,10 @@
 <script lang="ts">
-	import { createEventDispatcher } from "svelte";
 	import type { PUTRenameFileOrDir, DELETEFileOrDir } from "./+server";
 
-	export let path: string;
-	export let dir: string;
+	let { path, dir: initialDir, ondeleted }: { path: string; dir: string; ondeleted: () => void } = $props();
 
-	$: newname = dir;
-
-	const dispatch = createEventDispatcher();
+	let dir = $state(initialDir);
+	let newname = $state(initialDir);
 
 	const rename = async () => {
 		const res = await fetch("/files", {
@@ -16,7 +13,7 @@
 				oldpath: path + dir,
 				newname,
 			} satisfies PUTRenameFileOrDir),
-		})
+		});
 		if (!res.ok) {
 			console.error("Failed to rename directory:", res.statusText);
 			return;
@@ -31,7 +28,7 @@
 				fullpath: path + dir,
 			} satisfies DELETEFileOrDir),
 		});
-		if (res.ok) dispatch("deleted");
+		if (res.ok) ondeleted();
 	};
 </script>
 
@@ -45,12 +42,12 @@
 		spellcheck="false"
 		title="Directory Name"
 		bind:value={newname}
-		on:input={rename}
-		on:click|preventDefault
+		oninput={rename}
+		onclick={(e) => e.preventDefault()}
 	/>
 	<button
 		class="i-heroicons:trash-solid text-2xl min-w-8 hover:text-[var(--alert-color)] cursor-pointer"
 		title="Delete Directory"
-		on:click|preventDefault={del}
+		onclick={(e) => { e.preventDefault(); del(); }}
 	/>
 </a>

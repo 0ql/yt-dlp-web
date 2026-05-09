@@ -1,26 +1,20 @@
 <script lang="ts">
 	import Switch from "../switch.svelte";
 
-	const settings = {
+	let settings = $state({
 		URL: "",
 		extractAudio: false,
 		restrictFilenames: true,
 		audioFormat: "best",
 		directory: "./static/music/",
 		fileName: "%(title)s.%(ext)s",
-	};
+	});
 
-	let commandPreview = "";
+	let commandPreview = $derived(
+		`yt-dlp ${settings.extractAudio ? "-x --audio-format " + settings.audioFormat : ""} '${settings.URL}' -o '${settings.directory}${settings.fileName}' ${settings.restrictFilenames ? "--restrict-filenames" : ""}`,
+	);
 
-	$: commandPreview = `yt-dlp ${
-		settings.extractAudio
-			? "-x " + "--audio-format " + settings.audioFormat
-			: ""
-	} '${settings.URL}' -o '${settings.directory}${settings.fileName}' ${
-		settings.restrictFilenames ? "--restrict-filenames" : ""
-	}`;
-
-	let arr: string[] = [];
+	let arr = $state<string[]>([]);
 
 	const run = async () => {
 		const res = await fetch("/download", {
@@ -38,7 +32,6 @@
 			readRes = await reader.read();
 			console.log("recieved..");
 			arr.push(new TextDecoder().decode(readRes.value));
-			arr = arr;
 		} while (!readRes.done);
 		console.log("done");
 		arr.push("done");
@@ -140,6 +133,6 @@
 	</div>
 </div>
 
-<button class="box p-2 col-span-full text-lg cursor-pointer" on:click={run}
+<button class="box p-2 col-span-full text-lg cursor-pointer" onclick={run}
 	>Download</button
 >

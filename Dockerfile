@@ -17,7 +17,8 @@ COPY . .
 RUN pnpm build
 
 RUN apk update && \
-	apk add --no-cache yt-dlp
+	apk add --no-cache yt-dlp \
+		ca-certificates
 
 EXPOSE 3000
 
